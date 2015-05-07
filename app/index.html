@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>dweetster - Find dweeting things</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <!-- Web Components Polyfils -->
+    <script src="components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="imports/dweetster.html">
+
+    <style>
+        /*h2{
+            font-size: 3em !important;
+        }
+        .jumbotron-icon{
+            text-shadow:0 2px 1px #e65100;
+        }
+
+        core-toolbar{
+            background:transparent;
+            color: #fff;
+        }
+
+        core-toolbar span a{
+            color: #fff;
+        }
+
+        core-animated-pages{
+            width: 100%;
+            height:100%;
+        }
+
+        paper-item a{
+            color: #ffffff;
+            font-size: 1.3em;
+        }
+
+        paper-item i{
+            margin-right: 5px;
+        }
+
+        :unresolved {
+            display: flex;
+            justify-content: center;
+            background: rgba(255,255,255,0.5);
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+        }
+        :unresolved:after {
+            padding: 15px;
+            content: 'loading...';
+            color: #ccc;
+        }
+
+        core-drawer-panel:not([narrow]) #navicon {
+            display: none;
+        }
+
+        paper-input{
+            color: #ffffff;
+            width:40%;
+        }
+        paper-input /deep/ paper-input-decorator /deep/ input{
+            color: #ffff00 !important;
+            font-size:1.7rem !important;
+        }
+
+        paper-input /deep/ paper-input-decorator /deep/ input::-webkit-input-placeholder
+        {
+            color: #ffb74d !important;
+        }
+
+        paper-input /deep/ paper-input-decorator /deep/ .underline .unfocused-underline{
+            background-color: #ffffff !important;
+        }
+
+        paper-input /deep/ paper-input-decorator /deep/ .underline .focused-underline{
+            background-color: #ffff00 !important;
+        }
+
+        paper-input /deep/ paper-input-decorator[focused] /deep/ .floated-label .label-text{
+            color: #ffffff;
+        }*/
+    </style>
+
+</head>
+
+<body unresolved>
+    <app-router>
+        <app-route path="/" import="/views/landing-page.html"></app-route>
+        <app-route path="/" import="/views/about.html"></app-route>
+        <app-route path="/" import="/views/discover.html"></app-route>
+        <app-route path="/new/:thingName" import="/views/new-profile.html"></app-route>
+        <app-route path="/nothing" import="/views/no-thing.html"></app-route>
+        <app-route path="/profile/:id" import="/views/profile.html"></app-route>
+        <app-route path="*" import="/views/not-found-page.html"></app-route>
+    </app-router>
+    <!--<template is="auto-binding">
+        <core-toolbar style="z-index:12; padding:0 3%;">
+            <paper-item hash="{{link.hash}}" noink flex>
+                <i class="mdi-hardware-cast-connected white-text small"></i>
+                <a href="index.html">dweetster</a>
+            </paper-item>
+            <template repeat="{{link in links}}">
+                <span><a href="#{{link.hash}}">{{link.name}}</a></span>
+            </template>
+        </core-toolbar>
+        <div layout horizontal fit center-center class="orange darken-1 white-text">
+            <core-animated-pages id="pages" valueattr="hash"  selected="{{route}}" valueattr="hash" transitions="slide-from-right" style="overflow:hidden;">
+                <section layout vertical center-center hash="home" style="width:100%; height:100%;">
+                    <i class="large mdi-hardware-cast-connected white-text small jumbotron-icon"></i>
+                    <h2>Your 'things' are dweeting!</h2>
+                    <p style="font-size:20px;">Register, Find & Track them with dweetster</p>
+                    <paper-input id="thing_name" label="Type your thing name here & hit 'Enter'" floatingLabel ></paper-input>
+                </section>
+                <template repeat="{{link in links}}">
+                    <section hash="{{link.hash}}" layout vertical center-center style="width:100%; height:100%;">
+                        <div>{{link.name}}</div>
+                    </section>
+                </template>
+            </core-animated-pages>
+        </div>
+        <core-a11y-keys target="{{parentElement}}" keys="enter up" on-keys-pressed="{{keyHandler}}"></core-a11y-keys>
+        <core-ajax id="ajax" auto url="{{selectedPage.page.url}}" handleAs="document" on-core-response="{{onResponse}}"></core-ajax>
+    </template>-->
+
+
+	<script>
+        //var DEFAULT_ROUTE = 'home';
+        document.addEventListener('polymer-ready', function() {
+           /* var template = document.querySelector('template[is="auto-binding"]');
+
+            template.pages = [
+                {name: 'dweet?', url: 'views/about.html'},
+                {name: 'Discover', url: 'views/discover.html'},
+                {name: 'Register', url: 'views/register.html'}
+            ];
+
+            template.links = [
+                {name: 'dweet?', hash: 'about', url:'views/about.html'},
+                {name: 'Discover', hash: 'discover', url:''},
+                {name: 'Register', hash: 'register', url:''}
+            ];
+
+            template.views = [
+                {name: 'nothing', hash: 'nothing', url:'views/no-thing.html'},
+                {name: 'noprofile', hash: 'noprofile', url: 'views/no-profile.html'},
+                {name: 'profile', hash: 'profile', url:'views/profile.html'},
+                {name: 'discover', hash: 'discover', url: 'views/discover.html'},
+                {name: 'results', hash: 'results', url: 'views/results.html'}
+            ];
+
+            template.keyHandler = function(e, detail, sender){
+                var thing_name = document.querySelector('#thing_name').value;
+                var url = _.findWhere(template.views, function(view){ return view.name === 'profile' }).url;
+                $.get(url, function(response){
+                    var pages = document.querySelector('#pages');
+                    pages.injectBoundHTML(response,
+                            pages.selectedItem.firstElementChild);
+                });
+                /*if(thing_name !== null && thing_name !== undefined && thing_name !== ''){
+                    //make a call to get a dweet from the thing-name entered
+                    dweetio.get_latest_dweet_for(thing_name, function(err, dweet){
+                        if(dweet !== null && dweet !== undefined && dweet.length >= 1 ){
+                            //..check to see if a profile for this thing exists already, if not,
+                            //..take them to the profile creation page
+                            var ajax = document.querySelector('#ajax');
+                            ajax.go(_.findWhere(template.views, function(view){ return view.name === 'profile' }).url);
+                        }
+                        else
+                        {
+                            //let them know their thing does not exist
+                        }
+                    });
+                }
+            };
+
+            template.addEventListener('template-bound', function(e) {
+                // Use URL hash for initial route. Otherwise, use the first page.
+                this.route = this.route || DEFAULT_ROUTE;
+            });
+
+            template.onResponse = function(e, detail, sender){
+                var data = detail.response;
+
+                var pages = document.querySelector('#pages');
+                this.injectBoundHTML(data.innerHTML,
+                        pages.selectedItem.firstElementChild);
+            };*/
+        });
+	</script>
+</body>
+</html>

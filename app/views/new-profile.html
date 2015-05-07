@@ -1,0 +1,90 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../imports/dweetster.html">
+
+<polymer-element name="new-profile" attributes="name">
+    <style>
+        :host{
+            height:100%;
+            width:100%;
+        }
+
+    </style>
+
+    <template>
+        <!-- CSS -->
+        <link href="../assets/materialize/css/materialize.css" rel="stylesheet" />
+        <link href='../assets/app/css/kitchen.css' rel='stylesheet' type='text/css'>
+
+        <core-toolbar class="orange darken-1 white-text" style="z-index:12; padding:0 3%;">
+            <paper-item hash="{{link.hash}}" noink flex>
+                <i class="mdi-hardware-cast-connected white-text small"></i>
+                <a href="index.html">dweetster</a>
+            </paper-item>
+        </core-toolbar>
+        <div layout horizontal class="orange darken-1 white-text" style="width:100%;">
+            <section layout vertical center  style="width:100%; margin-top:1%;">
+                <div><h4>A new profile for your thing...</h4></div>
+                <paper-input id="thing_name" value="{{thingName}}" label="Thing Name" floatingLabel ></paper-input>
+                <paper-input id="thing_description" value="{{thingDescription}}" label="Description" floatingLabel ></paper-input>
+                <paper-input id="thing_device" value="{{thingDevice}}" label="Device dweeting" floatingLabel ></paper-input>
+                <paper-input id="thing_industry" value="{{thingIndustry}}" label="Field/Industry" floatingLabel ></paper-input>
+                <paper-input id="thing_tags" value="{{thingTags}}" label="Tags (comma separated)" floatingLabel ></paper-input>
+                <paper-button raised style="margin-top:30px; width:20%;">Create</paper-button>
+            </section>
+        </div>
+    </template>
+
+
+    <script>
+        (function(window) {
+            Polymer('new-profile', {
+                /**
+                 * ...
+                 *
+                 * @attribute name
+                 * @type string
+                 * @default 'new-profile'
+                 */
+                name: 'new-profile',
+
+                thingName: '',
+
+                thingDescription: '',
+
+                thingDevice: '',
+
+                thingIndustry: '',
+
+                thingTags: '',
+
+                dbSetup: function(){
+                    var host = ('https://dweetster.documents.azure.com:443/');
+                    var resourceToken = {};
+                    resourceTokens["kjZqAA=="] = (resourceToken); // Add the collection _rid (NOT the Collection Id but the internal resource id) and resourceToken for read/write on the collection
+
+                    var collectionUrl = (collectionUrl); // Add the collection self-link
+                    var client = DocumentDB.createClient(host, {
+                        resourceTokens: resourceTokens
+                    });
+                    var documentDefinition = {
+                        id: "Hello world document",
+                        content: "Hello World!"
+                    };
+                    client.createDocument(collectionUrl, documentDefinition, function(err, createdDocument) {
+                        if (err) {
+                            throw err;
+                        }
+
+                        console.log('result', createdDocument.content);
+                    });
+                },
+
+                ready: function () {
+
+                }
+
+
+            });
+        })();
+    </script>
+</polymer-element>

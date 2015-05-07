@@ -1,0 +1,101 @@
+<link rel="import" href="../components/polymer/polymer.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/font-roboto/roboto.html'>
+
+<!-- Polymer & Polymer Core Components -->
+<link rel='import' href='../components/polymer/polymer.html'>
+<link rel="import" href="../components/core-a11y-keys/core-a11y-keys.html">
+<link rel="import" href="../components/core-drawer-panel/core-drawer-panel.html">
+<link rel="import" href="../components/core-menu/core-menu.html">
+<link rel="import" href="../components/core-item/core-item.html">
+<link rel="import" href="../components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../components/core-icon-button/core-icon-button.html">
+
+<link rel="import" href="../components/core-pages/core-pages.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../components/core-animated-pages/transitions/slide-from-right.html">
+
+<link rel="import" href="../components/core-icons/core-icons.html">
+<link rel="import" href="../components/core-icons/av-icons.html">
+<link rel="import" href="../components/core-icons/communication-icons.html">
+<link rel="import" href="../components/core-icons/device-icons.html">
+<link rel="import" href="../components/core-icons/editor-icons.html">
+<link rel="import" href="../components/core-icons/hardware-icons.html">
+<link rel="import" href="../components/core-icons/image-icons.html">
+<link rel="import" href="../components/core-icons/maps-icons.html">
+<link rel="import" href="../components/core-icons/notification-icons.html">
+<link rel="import" href="../components/core-icons/social-icons.html">
+
+<!-- Polymer Paper Components -->
+<link rel="import" href="../components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../components/paper-item/paper-item.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/paper-input/paper-input-decorator.html">
+<link rel="import" href="../components/paper-button/paper-button.html">
+<link rel="import" href="../components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
+
+<polymer-element name="no-thing" attributes="name">
+    <style>
+        :host{
+            height:100%;
+            width:100%;
+        }
+    </style>
+
+    <template>
+        <!-- CSS -->
+        <link href="../assets/materialize/css/materialize.css" rel="stylesheet" />
+        <link href='../assets/app/css/kitchen.css' rel='stylesheet' type='text/css'>
+
+        <core-toolbar style="z-index:12; padding:0 3%;">
+            <!--<core-icon-button icon="menu" core-drawer-toggle id="side-nav-toggle"></core-icon-button>-->
+            <paper-item hash="{{link.hash}}" noink flex>
+                <i class="mdi-navigation-arrow-back white-text small"></i>
+                <a href="/">Go Back</a>
+            </paper-item>
+            <template repeat="{{link in links}}">
+                <span><a href="#{{link.hash}}">{{link.name}}</a></span>
+            </template>
+        </core-toolbar>
+        <div layout horizontal fit center-center class="orange darken-1 white-text">
+            <section layout vertical center hash="home" style="width:100%; height:100%;">
+
+                <div class="no-thing-message" layout vertical center>
+                    <i class="large mdi-action-info-outline white-text small jumbotron-icon"></i>
+                    <h2>Umm...what's your thing's name again?</h2>
+                    <p style="font-size:20px;">Sorry, but we couldn't find your thing on dweet.io. Here's what you need to do...</p>
+                </div>
+                <!--<paper-input id="thing_name" value="{{thingName}}" label="Type your thing name here & hit 'Enter'" floatingLabel ></paper-input>-->
+            </section>
+        </div>
+    </template>
+
+
+    <script>
+        (function(window) {
+            Polymer('no-thing', {
+                /**
+                 * ...
+                 *
+                 * @attribute name
+                 * @type string
+                 * @default 'landing-page'
+                 */
+                name: 'sensor-tile-app',
+
+                links: [
+                    {name: 'dweet?', hash: '/about', url:'views/about.html'},
+                    {name: 'Discover', hash: '/discover', url:''},
+                    {name: 'Register', hash: '/register', url:''}
+                ],
+
+                ready: function () {
+                }
+            });
+        })();
+    </script>
+</polymer-element>
